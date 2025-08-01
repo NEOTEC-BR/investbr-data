@@ -1,23 +1,38 @@
 name: Atualizar Ações Diariamente
 on:
   schedule:
-    - cron: '0 23 * * *'  # 20h no horário de Brasília (UTC-3)
+    - cron: '0 23 * * *'  # 20h BRT (23h UTC)
   workflow_dispatch:  # Permite acionar manualmente
+
+permissions:  # Permissões explícitas
+  contents: write  # Permite push no repositório
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Garante o histórico completo do Git
+
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
+
       - run: pip install -r requirements.txt
-      - run: python script_investbr.py
-      - name: Commit and push changes
+
+      - run: python script_investbr.py  # Executa o script principal
+
+      - name: Atualizar repositório
         run: |
+          # Configuração do Git
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          
+          # Sincroniza com o remoto ANTES do push
+          git pull origin main --rebase
+          
+          # Commit e push
           git add dados_acoes.json
-          git commit -m "Atualização automática $(date +'%d/%m/%Y %H:%M')"
-          git push
+          git commit -m "Atualização automática $(date -u +'%d/%m/%Y %H:%M UTC')"
+          git push origin main
