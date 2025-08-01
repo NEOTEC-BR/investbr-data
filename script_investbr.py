@@ -130,18 +130,18 @@ def buscar_dados_acao_fundamentus(ticker):
         "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
         "Accept-Encoding": "gzip, deflate, br",
         "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
+        "Referer": "https://www.fundamentus.com.br/",
         "Sec-Fetch-Dest": "document",
         "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-Site": "same-origin",
         "Cache-Control": "max-age=0"
     }
     
     try:
         # Adiciona um delay para parecer mais humano
         import time
-        time.sleep(1)
-        
+        time.sleep(2)
+
         response = requests.get(url, headers=headers, timeout=10)
         
         # Verifica se foi bloqueado por CAPTCHA
