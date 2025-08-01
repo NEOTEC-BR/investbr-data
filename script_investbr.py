@@ -123,15 +123,24 @@ def buscar_dados_acao_investidor10(ticker):
 
 def buscar_dados_acao_fundamentus(ticker):
     """
-    Extrai dados do site Fundamentus
+    Extrai dados do site Fundamentus com tratamento de erro melhorado
     """
     url = f"https://www.fundamentus.com.br/detalhes.php?papel={ticker.upper()}"
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Accept-Language": "pt-BR,pt;q=0.9"
     }
     
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=10)
+        
+        # Verifica se foi bloqueado por CAPTCHA
+        if "captcha" in response.text.lower():
+            return {
+                "ticker": ticker,
+                "erro": "Bloqueado por CAPTCHA no Fundamentus"
+            }
+            
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -199,8 +208,11 @@ def buscar_dados_acao_fundamentus(ticker):
 
         return dados
 
-    except Exception as e:
-        return {"ticker": ticker, "erro": str(e)}
+    except requests.exceptions.RequestException as e:
+        return {
+            "ticker": ticker,
+            "erro": f"Erro na requisição ao Fundamentus: {str(e)}"
+        }
 
 # Lista de ações para consulta
 acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3", 
@@ -260,8 +272,8 @@ for acao in acoes:
     if "ticker" in dados_fund and "ticker" in dados_inv10:
         dados_combinados["ticker"] = dados_inv10["ticker"]
     
-    # Adiciona atualizado_em como último campo
-    dados_combinados["atualizado_em"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # Adiciona atualizado_em como último campo Usa UTC-3 (horário de Brasília) em vez de UTC
+    dados_combinados["atualizado_em"] = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S")
     
     dados_acoes.append(dados_combinados)
 
