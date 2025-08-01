@@ -24,7 +24,7 @@ jobs:
       - run: python script_investbr.py  # Executa o script principal
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dados-acoes
           path: dados_acoes.json
