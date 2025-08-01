@@ -20,7 +20,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-52,19%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=AALR3",
-        "atualizado_em": "2025-08-01 20:18:08"
+        "atualizado_em": "2025-08-01 20:24:19"
     },
     {
         "ticker": "ABCB4",
@@ -43,7 +43,7 @@
         "cagr_lucros_5anos": "26,51%",
         "variacao_12m": "-2,80%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=ABCB4",
-        "atualizado_em": "2025-08-01 20:18:13"
+        "atualizado_em": "2025-08-01 20:24:21"
     },
     {
         "ticker": "ABEV3",
@@ -66,7 +66,7 @@
         "cagr_lucros_5anos": "5,30%",
         "variacao_12m": "12,07%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=ABEV3",
-        "atualizado_em": "2025-08-01 20:18:16"
+        "atualizado_em": "2025-08-01 20:24:24"
     },
     {
         "ticker": "AERI3",
@@ -89,7 +89,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-17,27%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=AERI3",
-        "atualizado_em": "2025-08-01 20:18:19"
+        "atualizado_em": "2025-08-01 20:24:27"
     },
     {
         "ticker": "AFLT3",
@@ -112,7 +112,7 @@
         "cagr_lucros_5anos": "6,93%",
         "variacao_12m": "7,68%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=AFLT3",
-        "atualizado_em": "2025-08-01 20:18:22"
+        "atualizado_em": "2025-08-01 20:24:30"
     },
     {
         "ticker": "AGRO3",
@@ -135,7 +135,7 @@
         "cagr_lucros_5anos": "22,82%",
         "variacao_12m": "-18,00%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=AGRO3",
-        "atualizado_em": "2025-08-01 20:18:25"
+        "atualizado_em": "2025-08-01 20:24:32"
     },
     {
         "ticker": "AGXY3",
@@ -158,7 +158,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-70,17%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=AGXY3",
-        "atualizado_em": "2025-08-01 20:18:29"
+        "atualizado_em": "2025-08-01 20:24:36"
     },
     {
         "ticker": "ALLD3",
@@ -181,7 +181,7 @@
         "cagr_lucros_5anos": "-8,01%",
         "variacao_12m": "14,59%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=ALLD3",
-        "atualizado_em": "2025-08-01 20:18:31"
+        "atualizado_em": "2025-08-01 20:24:38"
     },
     {
         "ticker": "ALOS3",
@@ -204,7 +204,7 @@
         "cagr_lucros_5anos": "36,59%",
         "variacao_12m": "2,88%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=ALOS3",
-        "atualizado_em": "2025-08-01 20:18:35"
+        "atualizado_em": "2025-08-01 20:24:41"
     },
     {
         "ticker": "ALPA3",
@@ -227,7 +227,7 @@
         "cagr_lucros_5anos": "8,99%",
         "variacao_12m": "-11,02%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=ALPA3",
-        "atualizado_em": "2025-08-01 20:18:39"
+        "atualizado_em": "2025-08-01 20:24:45"
     },
     {
         "ticker": "ALPA4",
@@ -250,7 +250,7 @@
         "cagr_lucros_5anos": "8,99%",
         "variacao_12m": "1,29%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=ALPA4",
-        "atualizado_em": "2025-08-01 20:18:43"
+        "atualizado_em": "2025-08-01 20:24:47"
     },
     {
         "ticker": "ALPK3",
@@ -273,7 +273,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-16,19%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=ALPK3",
-        "atualizado_em": "2025-08-01 20:18:46"
+        "atualizado_em": "2025-08-01 20:24:50"
     },
     {
         "ticker": "ALUP11",
@@ -296,7 +296,7 @@
         "cagr_lucros_5anos": "-1,13%",
         "variacao_12m": "0,46%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=ALUP11",
-        "atualizado_em": "2025-08-01 20:18:51"
+        "atualizado_em": "2025-08-01 20:24:54"
     },
     {
         "ticker": "AMAR3",
@@ -319,7 +319,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-12,06%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=AMAR3",
-        "atualizado_em": "2025-08-01 20:18:54"
+        "atualizado_em": "2025-08-01 20:24:57"
     },
     {
         "ticker": "VAMO3",
@@ -342,7 +342,7 @@
         "cagr_lucros_5anos": "11,28%",
         "variacao_12m": "2,75%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VAMO3",
-        "atualizado_em": "2025-08-01 20:18:58"
+        "atualizado_em": "2025-08-01 20:25:00"
     },
     {
         "ticker": "VBBR3",
@@ -365,7 +365,7 @@
         "cagr_lucros_5anos": "9,61%",
         "variacao_12m": "-3,69%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VBBR3",
-        "atualizado_em": "2025-08-01 20:19:02"
+        "atualizado_em": "2025-08-01 20:25:03"
     },
     {
         "ticker": "VITT3",
@@ -388,7 +388,7 @@
         "cagr_lucros_5anos": "-3,33%",
         "variacao_12m": "-16,73%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VITT3",
-        "atualizado_em": "2025-08-01 20:19:05"
+        "atualizado_em": "2025-08-01 20:25:06"
     },
     {
         "ticker": "VIVA3",
@@ -411,7 +411,7 @@
         "cagr_lucros_5anos": "37,95%",
         "variacao_12m": "11,62%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VIVA3",
-        "atualizado_em": "2025-08-01 20:19:09"
+        "atualizado_em": "2025-08-01 20:25:10"
     },
     {
         "ticker": "VIVT3",
@@ -434,7 +434,7 @@
         "cagr_lucros_5anos": "4,08%",
         "variacao_12m": "32,70%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VIVT3",
-        "atualizado_em": "2025-08-01 20:19:13"
+        "atualizado_em": "2025-08-01 20:25:12"
     },
     {
         "ticker": "VLID3",
@@ -457,7 +457,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "43,75%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VLID3",
-        "atualizado_em": "2025-08-01 20:19:16"
+        "atualizado_em": "2025-08-01 20:25:15"
     },
     {
         "ticker": "VSTE3",
@@ -480,7 +480,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-58,54%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VSTE3",
-        "atualizado_em": "2025-08-01 20:19:19"
+        "atualizado_em": "2025-08-01 20:25:18"
     },
     {
         "ticker": "VTRU3",
@@ -503,7 +503,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-27,37%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VTRU3",
-        "atualizado_em": "2025-08-01 20:19:22"
+        "atualizado_em": "2025-08-01 20:25:21"
     },
     {
         "ticker": "VULC3",
@@ -526,7 +526,7 @@
         "cagr_lucros_5anos": "79,45%",
         "variacao_12m": "28,80%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VULC3",
-        "atualizado_em": "2025-08-01 20:19:27"
+        "atualizado_em": "2025-08-01 20:25:23"
     },
     {
         "ticker": "VVEO3",
@@ -549,7 +549,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-50,23%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=VVEO3",
-        "atualizado_em": "2025-08-01 20:19:30"
+        "atualizado_em": "2025-08-01 20:25:26"
     },
     {
         "ticker": "WEGE3",
@@ -572,7 +572,7 @@
         "cagr_lucros_5anos": "23,05%",
         "variacao_12m": "-28,50%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=WEGE3",
-        "atualizado_em": "2025-08-01 20:19:35"
+        "atualizado_em": "2025-08-01 20:25:28"
     },
     {
         "ticker": "WEST3",
@@ -595,7 +595,7 @@
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-52,18%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=WEST3",
-        "atualizado_em": "2025-08-01 20:19:38"
+        "atualizado_em": "2025-08-01 20:25:31"
     },
     {
         "ticker": "WHRL3",
@@ -618,7 +618,7 @@
         "cagr_lucros_5anos": "4,68%",
         "variacao_12m": "7,97%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=WHRL3",
-        "atualizado_em": "2025-08-01 20:19:42"
+        "atualizado_em": "2025-08-01 20:25:33"
     },
     {
         "ticker": "WHRL4",
@@ -641,7 +641,7 @@
         "cagr_lucros_5anos": "4,68%",
         "variacao_12m": "15,08%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=WHRL4",
-        "atualizado_em": "2025-08-01 20:19:44"
+        "atualizado_em": "2025-08-01 20:25:36"
     },
     {
         "ticker": "WIZC3",
@@ -664,7 +664,7 @@
         "cagr_lucros_5anos": "9,46%",
         "variacao_12m": "30,65%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=WIZC3",
-        "atualizado_em": "2025-08-01 20:19:48"
+        "atualizado_em": "2025-08-01 20:25:38"
     },
     {
         "ticker": "WLMM4",
@@ -687,7 +687,7 @@
         "cagr_lucros_5anos": "18,03%",
         "variacao_12m": "-25,80%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=WLMM4",
-        "atualizado_em": "2025-08-01 20:19:52"
+        "atualizado_em": "2025-08-01 20:25:41"
     },
     {
         "ticker": "YDUQ3",
@@ -710,6 +710,6 @@
         "cagr_lucros_5anos": "26,19%",
         "variacao_12m": "25,95%",
         "erro": "Erro na requisição ao Fundamentus: 403 Client Error: Forbidden for url: https://www.fundamentus.com.br/detalhes.php?papel=YDUQ3",
-        "atualizado_em": "2025-08-01 20:19:55"
+        "atualizado_em": "2025-08-01 20:25:43"
     }
 ]
