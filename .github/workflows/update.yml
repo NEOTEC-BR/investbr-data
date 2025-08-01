@@ -4,8 +4,8 @@ on:
     - cron: '0 23 * * *'  # 20h BRT (23h UTC)
   workflow_dispatch:  # Permite acionar manualmente
 
-permissions:  # Permissões explícitas
-  contents: write  # Permite push no repositório
+permissions:
+  contents: write
 
 jobs:
   update:
@@ -13,15 +13,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Garante o histórico completo do Git
+          fetch-depth: 0
+
+      - name: Instalar dependências do sistema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tor torsocks
+
+      - name: Iniciar serviço Tor
+        run: |
+          sudo service tor start
+          echo "http_proxy=socks5://127.0.0.1:9050" >> $GITHUB_ENV
+          echo "https_proxy=socks5://127.0.0.1:9050" >> $GITHUB_ENV
 
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      - run: pip install -r requirements.txt
+      - name: Instalar dependências Python
+        run: pip install -r requirements.txt
 
-      - run: python script_investbr.py  # Executa o script principal
+      - name: Executar script com proxy Tor
+        run: |
+          torsocks python script_investbr.py
+          # Verifica se o Tor está funcionando
+          torsocks curl ifconfig.me
+          echo "IP utilizado: $(torsocks curl ifconfig.me)"
 
       - name: Commit e push atualizações
         run: |
@@ -35,3 +52,7 @@ jobs:
             git commit -m "Atualização automática $(date -u +'%d/%m/%Y %H:%M UTC')"
             git push origin main
           fi
+
+      - name: Parar serviço Tor (limpeza)
+        if: always()
+        run: sudo service tor stop

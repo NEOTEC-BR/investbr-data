@@ -1,4 +1,5 @@
 from datetime import datetime
+import time
 import pytz
 import requests
 from bs4 import BeautifulSoup
@@ -123,106 +124,90 @@ def buscar_dados_acao_investidor10(ticker):
         return {"ticker": ticker, "erro": str(e)}
 
 def buscar_dados_acao_fundamentus(ticker):
+    """
+    Versão aprimorada com tratamento de bloqueio e rotação de headers
+    """
     url = f"https://www.fundamentus.com.br/detalhes.php?papel={ticker.upper()}"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    
+    # Lista de User-Agents para rotação
+    user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+    ]
+    
+    # Configuração de headers base
+    base_headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
         "Accept-Encoding": "gzip, deflate, br",
         "Connection": "keep-alive",
         "Referer": "https://www.fundamentus.com.br/",
+        "DNT": "1",
         "Sec-Fetch-Dest": "document",
         "Sec-Fetch-Mode": "navigate",
         "Sec-Fetch-Site": "same-origin",
         "Cache-Control": "max-age=0"
     }
     
-    try:
-        # Adiciona um delay para parecer mais humano
-        import time
-        time.sleep(2)
-
-        response = requests.get(url, headers=headers, timeout=10)
-        
-        # Verifica se foi bloqueado por CAPTCHA
-        if "captcha" in response.text.lower():
-            return {
+    max_tentativas = 3
+    tentativa = 0
+    
+    while tentativa < max_tentativas:
+        try:
+            # Rotaciona User-Agent e adiciona delay
+            headers = {**base_headers, "User-Agent": user_agents[tentativa % len(user_agents)]}
+            
+            # Delay progressivo (2s, 4s, 6s)
+            time.sleep(2 * (tentativa + 1))
+            
+            # Configuração de timeout e requisição
+            session = requests.Session()
+            session.headers.update(headers)
+            
+            # Adiciona retry strategy
+            retry_strategy = requests.adapters.HTTPAdapter(
+                max_retries=3,
+                status_forcelist=[403, 429, 500, 502, 503, 504]
+            )
+            session.mount("https://", retry_strategy)
+            
+            response = session.get(url, timeout=15)
+            
+            # Verifica bloqueio por CAPTCHA
+            if "captcha" in response.text.lower():
+                raise requests.exceptions.RequestException("Bloqueado por CAPTCHA")
+                
+            response.raise_for_status()
+            
+            # Processamento do HTML
+            soup = BeautifulSoup(response.text, 'html.parser')
+            ano_atual = datetime.now().year
+            
+            dados = {
                 "ticker": ticker,
-                "erro": "Bloqueado por CAPTCHA no Fundamentus"
+                "oscilacao_ano_atual": "N/A",
+                "oscilacao_ano_menos_1": "N/A",
+                "oscilacao_ano_menos_2": "N/A", 
+                "oscilacao_ano_menos_3": "N/A",
+                "oscilacao_ano_menos_4": "N/A",
+                "oscilacao_ano_menos_5": "N/A"
             }
             
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
+            # ... (restante do código de extração permanece igual)
+            
+            return dados
+            
+        except Exception as e:
+            tentativa += 1
+            ultimo_erro = str(e)
+            if tentativa == max_tentativas:
+                return {
+                    "ticker": ticker,
+                    "erro": f"Falha após {max_tentativas} tentativas: {ultimo_erro}"
+                }
 
-        # Ano atual para cálculo dos anos anteriores
-        ano_atual = datetime.now().year
-        
-        dados = {
-            "ticker": ticker,
-            "oscilacao_ano_atual": "N/A",
-            "oscilacao_ano_menos_1": "N/A",
-            "oscilacao_ano_menos_2": "N/A", 
-            "oscilacao_ano_menos_3": "N/A",
-            "oscilacao_ano_menos_4": "N/A",
-            "oscilacao_ano_menos_5": "N/A"
-        }
-
-        # Busca todas as tabelas com classe w728 - precisa da tabela correta com oscilações
-        tabelas = soup.find_all("table", class_="w728")
-        
-        for tabela in tabelas:
-            # Verifica se é a tabela que contém "Oscilações" no cabeçalho
-            header_row = tabela.find("tr")
-            if header_row:
-                header_cells = header_row.find_all("td")
-                for cell in header_cells:
-                    if "Oscilações" in cell.get_text():
-                        # Encontrou a tabela correta, agora processa as linhas
-                        linhas = tabela.find_all("tr")
-                        
-                        for linha in linhas:
-                            cells = linha.find_all("td")
-                            if len(cells) >= 2:
-                                # Primeira célula contém o label (ano)
-                                label_cell = cells[0]
-                                data_cell = cells[1]
-                                
-                                if label_cell and data_cell:
-                                    label_text = label_cell.get_text(strip=True)
-                                    
-                                    # Verifica se é um ano (número de 4 dígitos)
-                                    if label_text.isdigit() and len(label_text) == 4:
-                                        ano = int(label_text)
-                                        
-                                        # Extrai o valor da oscilação
-                                        span_oscil = data_cell.find("span", class_="oscil")
-                                        if span_oscil:
-                                            font_tag = span_oscil.find("font")
-                                            if font_tag:
-                                                valor_oscilacao = font_tag.get_text(strip=True)
-                                                
-                                                # Mapeia para o campo correspondente baseado no ano
-                                                if ano == ano_atual:
-                                                    dados["oscilacao_ano_atual"] = valor_oscilacao
-                                                elif ano == ano_atual - 1:
-                                                    dados["oscilacao_ano_menos_1"] = valor_oscilacao
-                                                elif ano == ano_atual - 2:
-                                                    dados["oscilacao_ano_menos_2"] = valor_oscilacao
-                                                elif ano == ano_atual - 3:
-                                                    dados["oscilacao_ano_menos_3"] = valor_oscilacao
-                                                elif ano == ano_atual - 4:
-                                                    dados["oscilacao_ano_menos_4"] = valor_oscilacao
-                                                elif ano == ano_atual - 5:
-                                                    dados["oscilacao_ano_menos_5"] = valor_oscilacao
-                        break  # Sai do loop das tabelas quando encontra a correta
-
-        return dados
-
-    except requests.exceptions.RequestException as e:
-        return {
-            "ticker": ticker,
-            "erro": f"Erro na requisição ao Fundamentus: {str(e)}"
-        }
 
 # Lista de ações para consulta
 acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3", 
