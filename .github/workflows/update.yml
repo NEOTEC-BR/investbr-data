@@ -2,7 +2,7 @@ name: Atualizar Ações Diariamente
 on:
   schedule:
     - cron: '0 23 * * *'  # 20h BRT (23h UTC)
-  workflow_dispatch:  # Permite acionar manualmente
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,17 +11,18 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+        env:
+          http_proxy: ""
+          https_proxy: ""
 
-      - name: Instalar dependências do sistema
+      - name: Configurar ambiente Tor
         run: |
           sudo apt-get update
-          sudo apt-get install -y tor torsocks
-
-      - name: Iniciar serviço Tor
-        run: |
+          sudo apt-get install -y tor torsocks gcc python3-dev
           sudo service tor start
           echo "http_proxy=socks5://127.0.0.1:9050" >> $GITHUB_ENV
           echo "https_proxy=socks5://127.0.0.1:9050" >> $GITHUB_ENV
@@ -31,20 +32,22 @@ jobs:
           python-version: "3.10"
 
       - name: Instalar dependências Python
-        run: pip install -r requirements.txt
+        run: |
+          pip install pysocks
+          pip install -r requirements.txt
 
-      - name: Executar script com proxy Tor
+      - name: Executar script
         run: |
           torsocks python script_investbr.py
-          # Verifica se o Tor está funcionando
-          torsocks curl ifconfig.me
-          echo "IP utilizado: $(torsocks curl ifconfig.me)"
+          echo "IP utilizado: $(torsocks curl -s ifconfig.me)"
 
-      - name: Commit e push atualizações
+      - name: Commit e push
+        env:
+          http_proxy: ""
+          https_proxy: ""
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          
           git add dados_acoes.json
           if git diff --staged --quiet; then
             echo "Nenhuma alteração detectada"
@@ -53,6 +56,6 @@ jobs:
             git push origin main
           fi
 
-      - name: Parar serviço Tor (limpeza)
+      - name: Limpeza
         if: always()
         run: sudo service tor stop
