@@ -1,11 +1,30 @@
 from datetime import datetime
-import time
+import json
 import pytz
+import time
 import requests
 from bs4 import BeautifulSoup
-import json
-import os
-import re
+import time
+import random
+from fake_useragent import UserAgent
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+def setup_session():
+    session = requests.Session()
+    
+    # Configuração de retentativas
+    retry_strategy = Retry(
+        total=3,
+        backoff_factor=1,
+        status_forcelist=[403, 429, 500, 502, 503, 504],
+        allowed_methods=["GET"]
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    
+    return session
 
 def buscar_dados_acao_investidor10(ticker):
     """
@@ -124,90 +143,99 @@ def buscar_dados_acao_investidor10(ticker):
         return {"ticker": ticker, "erro": str(e)}
 
 def buscar_dados_acao_fundamentus(ticker):
-    """
-    Versão aprimorada com tratamento de bloqueio e rotação de headers
-    """
+    """Versão robusta para extrair dados do Fundamentus com tratamento de bloqueios"""
     url = f"https://www.fundamentus.com.br/detalhes.php?papel={ticker.upper()}"
+    ua = UserAgent()
     
-    # Lista de User-Agents para rotação
-    user_agents = [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
-    ]
-    
-    # Configuração de headers base
-    base_headers = {
+    headers = {
+        "User-Agent": ua.random,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive",
+        "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
         "Referer": "https://www.fundamentus.com.br/",
         "DNT": "1",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "same-origin",
+        "Connection": "keep-alive",
         "Cache-Control": "max-age=0"
     }
-    
-    max_tentativas = 3
-    tentativa = 0
-    
-    while tentativa < max_tentativas:
-        try:
-            # Rotaciona User-Agent e adiciona delay
-            headers = {**base_headers, "User-Agent": user_agents[tentativa % len(user_agents)]}
-            
-            # Delay progressivo (2s, 4s, 6s)
-            time.sleep(2 * (tentativa + 1))
-            
-            # Configuração de timeout e requisição
-            session = requests.Session()
-            session.headers.update(headers)
-            
-            # Adiciona retry strategy
-            retry_strategy = requests.adapters.HTTPAdapter(
-                max_retries=3,
-                status_forcelist=[403, 429, 500, 502, 503, 504]
-            )
-            session.mount("https://", retry_strategy)
-            
-            response = session.get(url, timeout=15)
-            
-            # Verifica bloqueio por CAPTCHA
-            if "captcha" in response.text.lower():
-                raise requests.exceptions.RequestException("Bloqueado por CAPTCHA")
-                
-            response.raise_for_status()
-            
-            # Processamento do HTML
-            soup = BeautifulSoup(response.text, 'html.parser')
-            ano_atual = datetime.now().year
-            
-            dados = {
-                "ticker": ticker,
-                "oscilacao_ano_atual": "N/A",
-                "oscilacao_ano_menos_1": "N/A",
-                "oscilacao_ano_menos_2": "N/A", 
-                "oscilacao_ano_menos_3": "N/A",
-                "oscilacao_ano_menos_4": "N/A",
-                "oscilacao_ano_menos_5": "N/A"
-            }
-            
-            # ... (restante do código de extração permanece igual)
-            
-            return dados
-            
-        except Exception as e:
-            tentativa += 1
-            ultimo_erro = str(e)
-            if tentativa == max_tentativas:
-                return {
-                    "ticker": ticker,
-                    "erro": f"Falha após {max_tentativas} tentativas: {ultimo_erro}"
-                }
 
+    try:
+        # Configuração da sessão com retry automático
+        session = requests.Session()
+        retry = Retry(
+            total=3,
+            backoff_factor=1,
+            status_forcelist=[403, 429, 500, 502, 503, 504]
+        )
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount("https://", adapter)
+        session.mount("http://", adapter)
+
+        # Delay aleatório entre 3-7 segundos
+        time.sleep(random.uniform(3, 7))
+        
+        # Primeira tentativa
+        response = session.get(url, headers=headers, timeout=20)
+        
+        # Se bloqueado, tenta com novo User-Agent
+        if response.status_code == 403:
+            headers["User-Agent"] = ua.random
+            time.sleep(5)  # Delay maior para segunda tentativa
+            response = session.get(url, headers=headers, timeout=20)
+            
+        response.raise_for_status()
+        
+        # Verifica se foi redirecionado para CAPTCHA
+        if "captcha" in response.text.lower():
+            raise Exception("Bloqueado por CAPTCHA no Fundamentus")
+            
+        soup = BeautifulSoup(response.text, 'html.parser')
+        ano_atual = datetime.now().year
+        
+        dados = {
+            "ticker": ticker,
+            "oscilacao_ano_atual": "N/A",
+            "oscilacao_ano_menos_1": "N/A",
+            "oscilacao_ano_menos_2": "N/A", 
+            "oscilacao_ano_menos_3": "N/A",
+            "oscilacao_ano_menos_4": "N/A",
+            "oscilacao_ano_menos_5": "N/A"
+        }
+
+        # Extração dos dados das oscilações
+        tabela_osc = soup.find("table", class_="w728")
+        if tabela_osc:
+            for linha in tabela_osc.find_all("tr"):
+                cells = linha.find_all("td")
+                if len(cells) >= 2 and cells[0].get_text().strip().isdigit():
+                    ano = int(cells[0].get_text().strip())
+                    valor = cells[1].find("span", class_="oscil")
+                    if valor:
+                        oscilacao = valor.find("font").get_text(strip=True)
+                        if ano == ano_atual:
+                            dados["oscilacao_ano_atual"] = oscilacao
+                        elif ano == ano_atual - 1:
+                            dados["oscilacao_ano_menos_1"] = oscilacao
+                        elif ano == ano_atual - 2:
+                            dados["oscilacao_ano_menos_2"] = oscilacao
+                        elif ano == ano_atual - 3:
+                            dados["oscilacao_ano_menos_3"] = oscilacao
+                        elif ano == ano_atual - 4:
+                            dados["oscilacao_ano_menos_4"] = oscilacao
+                        elif ano == ano_atual - 5:
+                            dados["oscilacao_ano_menos_5"] = oscilacao
+
+        return dados
+        
+    except Exception as e:
+        return {
+            "ticker": ticker,
+            "erro": f"Erro no Fundamentus: {str(e)}",
+            "oscilacao_ano_atual": "N/A",
+            "oscilacao_ano_menos_1": "N/A",
+            "oscilacao_ano_menos_2": "N/A", 
+            "oscilacao_ano_menos_3": "N/A",
+            "oscilacao_ano_menos_4": "N/A",
+            "oscilacao_ano_menos_5": "N/A"
+        }
 
 # Lista de ações para consulta
 acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3", 
