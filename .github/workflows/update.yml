@@ -11,7 +11,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout code (sem proxy)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -19,13 +19,24 @@ jobs:
           http_proxy: ""
           https_proxy: ""
 
-      - name: Configurar ambiente Tor
+      - name: Instalar dependências do sistema
         run: |
           sudo apt-get update
-          sudo apt-get install -y tor torsocks gcc python3-dev
+          sudo apt-get install -y \
+            tor \
+            torsocks \
+            gcc \
+            python3-dev \
+            libssl-dev \
+            libffi-dev
+
+      - name: Configurar Tor
+        run: |
           sudo service tor start
+          echo "SOCKS_PROXY=socks5://127.0.0.1:9050" >> $GITHUB_ENV
           echo "http_proxy=socks5://127.0.0.1:9050" >> $GITHUB_ENV
           echo "https_proxy=socks5://127.0.0.1:9050" >> $GITHUB_ENV
+          echo "Verificando IP: $(torsocks curl -s ifconfig.me)"
 
       - uses: actions/setup-python@v4
         with:
@@ -33,15 +44,16 @@ jobs:
 
       - name: Instalar dependências Python
         run: |
-          pip install pysocks
+          python -m pip install --upgrade pip
+          pip install --no-cache-dir pysocks
           pip install -r requirements.txt
 
-      - name: Executar script
+      - name: Executar script com Tor
         run: |
           torsocks python script_investbr.py
-          echo "IP utilizado: $(torsocks curl -s ifconfig.me)"
+          echo "IP final utilizado: $(torsocks curl -s ifconfig.me)"
 
-      - name: Commit e push
+      - name: Commit e push (sem proxy)
         env:
           http_proxy: ""
           https_proxy: ""
@@ -56,6 +68,6 @@ jobs:
             git push origin main
           fi
 
-      - name: Limpeza
+      - name: Parar Tor (limpeza)
         if: always()
         run: sudo service tor stop

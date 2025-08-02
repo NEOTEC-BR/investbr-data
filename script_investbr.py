@@ -211,7 +211,7 @@ def buscar_dados_acao_fundamentus(ticker):
 
 # Lista de ações para consulta
 acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3", 
-         "ALLD3", "ALOS3", "ALPA3", "ALPA4", "ALPK3", "ALUP11", "AMAR3", 
+        #  "ALLD3", "ALOS3", "ALPA3", "ALPA4", "ALPK3", "ALUP11", "AMAR3", 
         #  "AMBP3", "AMER3", "AMOB3", "ANIM3", "ARML3", "ASAI3", "ATMP3", "AURE3", 
         #  "AVLL3", "AZUL4", "AZZA3", "B3SA3", "BALM4", "BAZA3", "BBAS3", "BBDC3", 
         #  "BBDC4", "BBSE3", "BEEF3", "BEES3", "BEES4", "BGIP3", "BGIP4", "BHIA3", 
@@ -245,7 +245,7 @@ acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3",
         #  "TAEE4", "TASA3", "TASA4", "TCSA3", "TECN3", "TEND3", "TFCO4", "TGMA3", 
         #  "TIMS3", "TOKY3", "TOTS3", "TRAD3", "TRIS3", "TTEN3", "TUPY3", "TXRX3", 
         #  "UCAS3", "UGPA3", "UNIP3", "UNIP6", "USIM3", "USIM5", "USIM6", "VALE3", 
-         "VAMO3", "VBBR3", "VITT3", "VIVA3", "VIVT3", "VLID3", "VSTE3", "VTRU3", 
+        #  "VAMO3", "VBBR3", "VITT3", "VIVA3", "VIVT3", "VLID3", "VSTE3", "VTRU3", 
          "VULC3", "VVEO3", "WEGE3", "WEST3", "WHRL3", "WHRL4", "WIZC3", "WLMM4", "YDUQ3"]
 
 print("Iniciando extração de dados...")
