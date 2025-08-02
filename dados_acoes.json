@@ -19,8 +19,14 @@
         "cagr_receitas_5anos": "6,01%",
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-52,19%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:11:09"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=AALR3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:38:51"
     },
     {
         "ticker": "ABCB4",
@@ -42,8 +48,14 @@
         "cagr_receitas_5anos": "11,63%",
         "cagr_lucros_5anos": "26,51%",
         "variacao_12m": "-2,80%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:11:21"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=ABCB4 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:39:01"
     },
     {
         "ticker": "ABEV3",
@@ -65,8 +77,14 @@
         "cagr_receitas_5anos": "9,46%",
         "cagr_lucros_5anos": "5,30%",
         "variacao_12m": "12,07%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:11:34"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=ABEV3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:39:13"
     },
     {
         "ticker": "AERI3",
@@ -88,8 +106,14 @@
         "cagr_receitas_5anos": "-11,32%",
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-17,27%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:11:46"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=AERI3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:39:25"
     },
     {
         "ticker": "AFLT3",
@@ -111,8 +135,14 @@
         "cagr_receitas_5anos": "16,09%",
         "cagr_lucros_5anos": "6,93%",
         "variacao_12m": "7,68%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:11:59"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=AFLT3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:39:37"
     },
     {
         "ticker": "AGRO3",
@@ -134,8 +164,14 @@
         "cagr_receitas_5anos": "10,96%",
         "cagr_lucros_5anos": "22,82%",
         "variacao_12m": "-18,00%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:12:11"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=AGRO3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:39:47"
     },
     {
         "ticker": "AGXY3",
@@ -157,8 +193,14 @@
         "cagr_receitas_5anos": "-3,15%",
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-70,17%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:12:25"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=AGXY3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:40:00"
     },
     {
         "ticker": "VULC3",
@@ -180,8 +222,14 @@
         "cagr_receitas_5anos": "21,75%",
         "cagr_lucros_5anos": "79,45%",
         "variacao_12m": "28,80%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:12:37"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=VULC3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:40:11"
     },
     {
         "ticker": "VVEO3",
@@ -203,8 +251,14 @@
         "cagr_receitas_5anos": "N/A",
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-50,23%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:12:51"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=VVEO3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:40:24"
     },
     {
         "ticker": "WEGE3",
@@ -226,8 +280,14 @@
         "cagr_receitas_5anos": "18,58%",
         "cagr_lucros_5anos": "23,05%",
         "variacao_12m": "-28,50%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:13:03"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=WEGE3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:40:37"
     },
     {
         "ticker": "WEST3",
@@ -249,8 +309,14 @@
         "cagr_receitas_5anos": "-8,00%",
         "cagr_lucros_5anos": "N/A",
         "variacao_12m": "-52,18%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:13:17"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=WEST3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:40:47"
     },
     {
         "ticker": "WHRL3",
@@ -272,8 +338,14 @@
         "cagr_receitas_5anos": "7,30%",
         "cagr_lucros_5anos": "4,68%",
         "variacao_12m": "7,97%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:13:31"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=WHRL3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:40:59"
     },
     {
         "ticker": "WHRL4",
@@ -295,8 +367,14 @@
         "cagr_receitas_5anos": "7,30%",
         "cagr_lucros_5anos": "4,68%",
         "variacao_12m": "15,08%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:13:44"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=WHRL4 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:41:10"
     },
     {
         "ticker": "WIZC3",
@@ -318,8 +396,14 @@
         "cagr_receitas_5anos": "10,21%",
         "cagr_lucros_5anos": "9,46%",
         "variacao_12m": "30,65%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:13:58"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=WIZC3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:41:21"
     },
     {
         "ticker": "WLMM4",
@@ -341,8 +425,14 @@
         "cagr_receitas_5anos": "25,24%",
         "cagr_lucros_5anos": "18,03%",
         "variacao_12m": "-25,80%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:14:12"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=WLMM4 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:41:31"
     },
     {
         "ticker": "YDUQ3",
@@ -364,7 +454,13 @@
         "cagr_receitas_5anos": "6,88%",
         "cagr_lucros_5anos": "26,19%",
         "variacao_12m": "25,95%",
-        "erro": "Falha após 3 tentativas: HTTPAdapter.__init__() got an unexpected keyword argument 'status_forcelist'",
-        "atualizado_em": "2025-08-01 21:14:25"
+        "erro": "Erro no Fundamentus: HTTPSConnectionPool(host='www.fundamentus.com.br', port=443): Max retries exceeded with url: /detalhes.php?papel=YDUQ3 (Caused by ResponseError('too many 403 error responses'))",
+        "oscilacao_ano_atual": "N/A",
+        "oscilacao_ano_menos_1": "N/A",
+        "oscilacao_ano_menos_2": "N/A",
+        "oscilacao_ano_menos_3": "N/A",
+        "oscilacao_ano_menos_4": "N/A",
+        "oscilacao_ano_menos_5": "N/A",
+        "atualizado_em": "2025-08-01 21:41:43"
     }
 ]
