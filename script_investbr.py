@@ -6,7 +6,8 @@ from bs4 import BeautifulSoup
 import json
 import os
 import re
-from curl_cffi import requests as curl_requests
+from curl_cffi.requests import Session
+from curl_cffi import get_random_profile
 
 
 def buscar_dados_acao_investidor10(ticker):
@@ -127,33 +128,34 @@ def buscar_dados_acao_investidor10(ticker):
 
 def buscar_dados_acao_fundamentus(ticker):
     """
-    Versão com TLS spoof via curl_cffi para evitar bloqueio (403) pelo site Fundamentus
+    Scraper para Fundamentus com curl_cffi (nova API) com profile aleatório
+    para simular navegador e evitar bloqueios.
     """
     url = f"https://www.fundamentus.com.br/detalhes.php?papel={ticker.upper()}"
-    
+
+    # Headers típicos de navegador — pode complementar conforme necessário
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
-        "Referer": "https://www.fundamentus.com.br/",
         "Connection": "keep-alive",
+        "Referer": "https://www.fundamentus.com.br/",
         "Cache-Control": "max-age=0",
     }
 
     max_tentativas = 3
     tentativa = 0
 
+    # Seleciona um perfil de navegador (ex: Chrome, Firefox)
+    profile = get_random_profile("chrome")
+
     while tentativa < max_tentativas:
         try:
-            # Delay progressivo entre tentativas
-            time.sleep(2 * (tentativa + 1))
+            time.sleep(2 * (tentativa + 1))  # atraso progressivo
 
-            response = curl_requests.get(
-                url,
-                headers=headers,
-                impersonate="chrome113", # 120 é mais recente
-                timeout=20
-            )
+            # Cria uma nova sessão com o profile do navegador real
+            session = Session(impersonate=profile)
+
+            response = session.get(url, headers=headers, timeout=20)
 
             if "captcha" in response.text.lower():
                 raise Exception("Bloqueado por CAPTCHA")
@@ -167,24 +169,23 @@ def buscar_dados_acao_fundamentus(ticker):
                 "ticker": ticker,
                 "oscilacao_ano_atual": "N/A",
                 "oscilacao_ano_menos_1": "N/A",
-                "oscilacao_ano_menos_2": "N/A", 
+                "oscilacao_ano_menos_2": "N/A",
                 "oscilacao_ano_menos_3": "N/A",
                 "oscilacao_ano_menos_4": "N/A",
                 "oscilacao_ano_menos_5": "N/A"
             }
 
-            # Exemplo genérico — você pode adaptar de acordo com a lógica original
-            # Aqui ele procura oscilações por ano
+            # Exemplo de parsing genérico de oscilação por ano
             tabela = soup.find("table", class_="resultado")
             if tabela:
                 linhas = tabela.find_all("tr")
                 for linha in linhas:
                     colunas = linha.find_all("td")
                     if len(colunas) >= 2:
-                        ano = colunas[0].get_text(strip=True)
+                        ano_texto = colunas[0].get_text(strip=True)
                         valor = colunas[1].get_text(strip=True)
-                        if ano.isdigit():
-                            ano = int(ano)
+                        if ano_texto.isdigit():
+                            ano = int(ano_texto)
                             if ano == ano_atual:
                                 dados["oscilacao_ano_atual"] = valor
                             elif ano == ano_atual - 1:
