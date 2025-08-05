@@ -151,7 +151,7 @@ def buscar_dados_acao_fundamentus(ticker):
             response = curl_requests.get(
                 url,
                 headers=headers,
-                impersonate="chrome120",
+                impersonate="chrome113", # 120 é mais recente
                 timeout=20
             )
 
@@ -247,7 +247,8 @@ acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3",
         #  "TIMS3", "TOKY3", "TOTS3", "TRAD3", "TRIS3", "TTEN3", "TUPY3", "TXRX3", 
         #  "UCAS3", "UGPA3", "UNIP3", "UNIP6", "USIM3", "USIM5", "USIM6", "VALE3", 
         #  "VAMO3", "VBBR3", "VITT3", "VIVA3", "VIVT3", "VLID3", "VSTE3", "VTRU3", 
-         "VULC3", "VVEO3", "WEGE3", "WEST3", "WHRL3", "WHRL4", "WIZC3", "WLMM4", "YDUQ3"]
+        #  "VULC3", "VVEO3", "WEGE3", "WEST3", "WHRL3", "WHRL4", "WIZC3", "WLMM4", "YDUQ3"
+         ]
 
 print("Iniciando extração de dados...")
 
