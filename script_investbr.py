@@ -6,9 +6,7 @@ from bs4 import BeautifulSoup
 import json
 import os
 import re
-from curl_cffi.requests import Session
-from curl_cffi import get_random_profile
-
+from curl_cffi import requests as curl_requests
 
 def buscar_dados_acao_investidor10(ticker):
     """
@@ -128,34 +126,32 @@ def buscar_dados_acao_investidor10(ticker):
 
 def buscar_dados_acao_fundamentus(ticker):
     """
-    Scraper para Fundamentus com curl_cffi (nova API) com profile aleatório
-    para simular navegador e evitar bloqueios.
+    Scraper para Fundamentus com curl_cffi, simulando navegador real para evitar bloqueios (403)
     """
     url = f"https://www.fundamentus.com.br/detalhes.php?papel={ticker.upper()}"
 
-    # Headers típicos de navegador — pode complementar conforme necessário
     headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
         "Connection": "keep-alive",
         "Referer": "https://www.fundamentus.com.br/",
-        "Cache-Control": "max-age=0",
+        "Cache-Control": "max-age=0"
     }
 
     max_tentativas = 3
     tentativa = 0
 
-    # Seleciona um perfil de navegador (ex: Chrome, Firefox)
-    profile = get_random_profile("chrome")
-
     while tentativa < max_tentativas:
         try:
             time.sleep(2 * (tentativa + 1))  # atraso progressivo
 
-            # Cria uma nova sessão com o profile do navegador real
-            session = Session(impersonate=profile)
-
-            response = session.get(url, headers=headers, timeout=20)
+            response = curl_requests.get(
+                url,
+                headers=headers,
+                impersonate="chrome110",  # parâmetro suportado atualmente
+                timeout=20
+            )
 
             if "captcha" in response.text.lower():
                 raise Exception("Bloqueado por CAPTCHA")
@@ -175,7 +171,7 @@ def buscar_dados_acao_fundamentus(ticker):
                 "oscilacao_ano_menos_5": "N/A"
             }
 
-            # Exemplo de parsing genérico de oscilação por ano
+            # Exemplo genérico de onde extrair os dados
             tabela = soup.find("table", class_="resultado")
             if tabela:
                 linhas = tabela.find_all("tr")
