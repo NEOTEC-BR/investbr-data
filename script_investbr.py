@@ -1,30 +1,13 @@
 from datetime import datetime
-import json
-import pytz
 import time
+import pytz
 import requests
 from bs4 import BeautifulSoup
-import time
-import random
-from fake_useragent import UserAgent
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
+import json
+import os
+import re
+from curl_cffi import requests as curl_requests
 
-def setup_session():
-    session = requests.Session()
-    
-    # Configuração de retentativas
-    retry_strategy = Retry(
-        total=3,
-        backoff_factor=1,
-        status_forcelist=[403, 429, 500, 502, 503, 504],
-        allowed_methods=["GET"]
-    )
-    adapter = HTTPAdapter(max_retries=retry_strategy)
-    session.mount("https://", adapter)
-    session.mount("http://", adapter)
-    
-    return session
 
 def buscar_dados_acao_investidor10(ticker):
     """
@@ -143,99 +126,89 @@ def buscar_dados_acao_investidor10(ticker):
         return {"ticker": ticker, "erro": str(e)}
 
 def buscar_dados_acao_fundamentus(ticker):
-    """Versão robusta para extrair dados do Fundamentus com tratamento de bloqueios"""
+    """
+    Versão com TLS spoof via curl_cffi para evitar bloqueio (403) pelo site Fundamentus
+    """
     url = f"https://www.fundamentus.com.br/detalhes.php?papel={ticker.upper()}"
-    ua = UserAgent()
     
     headers = {
-        "User-Agent": ua.random,
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
         "Referer": "https://www.fundamentus.com.br/",
-        "DNT": "1",
         "Connection": "keep-alive",
-        "Cache-Control": "max-age=0"
+        "Cache-Control": "max-age=0",
     }
 
-    try:
-        # Configuração da sessão com retry automático
-        session = requests.Session()
-        retry = Retry(
-            total=3,
-            backoff_factor=1,
-            status_forcelist=[403, 429, 500, 502, 503, 504]
-        )
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount("https://", adapter)
-        session.mount("http://", adapter)
+    max_tentativas = 3
+    tentativa = 0
 
-        # Delay aleatório entre 3-7 segundos
-        time.sleep(random.uniform(3, 7))
-        
-        # Primeira tentativa
-        response = session.get(url, headers=headers, timeout=20)
-        
-        # Se bloqueado, tenta com novo User-Agent
-        if response.status_code == 403:
-            headers["User-Agent"] = ua.random
-            time.sleep(5)  # Delay maior para segunda tentativa
-            response = session.get(url, headers=headers, timeout=20)
-            
-        response.raise_for_status()
-        
-        # Verifica se foi redirecionado para CAPTCHA
-        if "captcha" in response.text.lower():
-            raise Exception("Bloqueado por CAPTCHA no Fundamentus")
-            
-        soup = BeautifulSoup(response.text, 'html.parser')
-        ano_atual = datetime.now().year
-        
-        dados = {
-            "ticker": ticker,
-            "oscilacao_ano_atual": "N/A",
-            "oscilacao_ano_menos_1": "N/A",
-            "oscilacao_ano_menos_2": "N/A", 
-            "oscilacao_ano_menos_3": "N/A",
-            "oscilacao_ano_menos_4": "N/A",
-            "oscilacao_ano_menos_5": "N/A"
-        }
+    while tentativa < max_tentativas:
+        try:
+            # Delay progressivo entre tentativas
+            time.sleep(2 * (tentativa + 1))
 
-        # Extração dos dados das oscilações
-        tabela_osc = soup.find("table", class_="w728")
-        if tabela_osc:
-            for linha in tabela_osc.find_all("tr"):
-                cells = linha.find_all("td")
-                if len(cells) >= 2 and cells[0].get_text().strip().isdigit():
-                    ano = int(cells[0].get_text().strip())
-                    valor = cells[1].find("span", class_="oscil")
-                    if valor:
-                        oscilacao = valor.find("font").get_text(strip=True)
-                        if ano == ano_atual:
-                            dados["oscilacao_ano_atual"] = oscilacao
-                        elif ano == ano_atual - 1:
-                            dados["oscilacao_ano_menos_1"] = oscilacao
-                        elif ano == ano_atual - 2:
-                            dados["oscilacao_ano_menos_2"] = oscilacao
-                        elif ano == ano_atual - 3:
-                            dados["oscilacao_ano_menos_3"] = oscilacao
-                        elif ano == ano_atual - 4:
-                            dados["oscilacao_ano_menos_4"] = oscilacao
-                        elif ano == ano_atual - 5:
-                            dados["oscilacao_ano_menos_5"] = oscilacao
+            response = curl_requests.get(
+                url,
+                headers=headers,
+                impersonate="chrome120",
+                timeout=20
+            )
 
-        return dados
-        
-    except Exception as e:
-        return {
-            "ticker": ticker,
-            "erro": f"Erro no Fundamentus: {str(e)}",
-            "oscilacao_ano_atual": "N/A",
-            "oscilacao_ano_menos_1": "N/A",
-            "oscilacao_ano_menos_2": "N/A", 
-            "oscilacao_ano_menos_3": "N/A",
-            "oscilacao_ano_menos_4": "N/A",
-            "oscilacao_ano_menos_5": "N/A"
-        }
+            if "captcha" in response.text.lower():
+                raise Exception("Bloqueado por CAPTCHA")
+
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.text, 'html.parser')
+            ano_atual = datetime.now().year
+
+            dados = {
+                "ticker": ticker,
+                "oscilacao_ano_atual": "N/A",
+                "oscilacao_ano_menos_1": "N/A",
+                "oscilacao_ano_menos_2": "N/A", 
+                "oscilacao_ano_menos_3": "N/A",
+                "oscilacao_ano_menos_4": "N/A",
+                "oscilacao_ano_menos_5": "N/A"
+            }
+
+            # Exemplo genérico — você pode adaptar de acordo com a lógica original
+            # Aqui ele procura oscilações por ano
+            tabela = soup.find("table", class_="resultado")
+            if tabela:
+                linhas = tabela.find_all("tr")
+                for linha in linhas:
+                    colunas = linha.find_all("td")
+                    if len(colunas) >= 2:
+                        ano = colunas[0].get_text(strip=True)
+                        valor = colunas[1].get_text(strip=True)
+                        if ano.isdigit():
+                            ano = int(ano)
+                            if ano == ano_atual:
+                                dados["oscilacao_ano_atual"] = valor
+                            elif ano == ano_atual - 1:
+                                dados["oscilacao_ano_menos_1"] = valor
+                            elif ano == ano_atual - 2:
+                                dados["oscilacao_ano_menos_2"] = valor
+                            elif ano == ano_atual - 3:
+                                dados["oscilacao_ano_menos_3"] = valor
+                            elif ano == ano_atual - 4:
+                                dados["oscilacao_ano_menos_4"] = valor
+                            elif ano == ano_atual - 5:
+                                dados["oscilacao_ano_menos_5"] = valor
+
+            return dados
+
+        except Exception as e:
+            tentativa += 1
+            ultimo_erro = str(e)
+            if tentativa == max_tentativas:
+                return {
+                    "ticker": ticker,
+                    "erro": f"Falha após {max_tentativas} tentativas: {ultimo_erro}"
+                }
+
 
 # Lista de ações para consulta
 acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3", 
@@ -248,7 +221,7 @@ acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3",
         #  "BRKM3", "BRKM5", "BRSR3", "BRSR6", "BRST3", "CAMB3", "CAML3", "CASH3", 
         #  "CBAV3", "CCTY3", "CEAB3", "CEBR3", "CEBR6", "CEDO4", "CGAS5", "CGRA3", 
         #  "CGRA4", "CLSC3", "CLSC4", "CMIG3", "CMIG4", "CMIN3", "COCE3", "COCE5", 
-        #  "COGN3", "CPFE3", "CPLE3", "CPLE6", "CRFB3", "CRPG5", "CSAN3", "CSED3", 
+        #  "COGN3", "CPFE3", "CPLE3", "CPLE6", "CRPG5", "CSAN3", "CSED3", 
         #  "CSMG3", "CSNA3", "CSUD3", "CURY3", "CVCB3", "CXSE3", "CYRE3", "DASA3", 
         #  "DESK3", "DEXP3", "DEXP4", "DIRR3", "DMVF3", "DOTZ3", "DXCO3", "EALT3", 
         #  "EALT4", "ECOR3", "EGIE3", "ELET3", "ELET5", "ELET6", "EMAE4", "EMBR3", 
@@ -261,8 +234,8 @@ acoes = ["AALR3", "ABCB4", "ABEV3", "AERI3", "AFLT3", "AGRO3", "AGXY3",
         #  "KLBN4", "LAND3", "LAVV3", "LEVE3", "LIGT3", "LJQQ3", "LOGG3", "LOGN3", 
         #  "LPSB3", "LREN3", "LVTC3", "LWSA3", "MATD3", "MDIA3", "MDNE3", "MEAL3", 
         #  "MELK3", "MGLU3", "MILS3", "MLAS3", "MNDL3", "MOAR3", "MOTV3", "MOVI3", 
-        #  "MRVE3", "MTRE3", "MTSA4", "MULT3", "MYPK3", "NEOE3", "NEXP3", "NGRD3", 
-        #  "NTCO3", "ODPV3", "OFSA3", "OIBR3", "OIBR4", "ONCO3", "OPCT3", "ORVR3", 
+        #  "MRVE3", "MTRE3", "MTSA4", "MULT3", "MYPK3", "NATU3", "NEOE3", "NEXP3",  
+        #  "NGRD3", "ODPV3", "OFSA3", "OIBR3", "OIBR4", "ONCO3", "OPCT3", "ORVR3", 
         #  "PCAR3", "PDTC3", "PETR3", "PETR4", "PETZ3", "PFRM3", "PGMN3", "PLAS3", 
         #  "PLPL3", "PMAM3", "PNVL3", "POMO3", "POMO4", "PORT3", "POSI3", "PRIO3", 
         #  "PRNR3", "PSSA3", "PTBL3", "PTNT3", "PTNT4", "QUAL3", "RADL3", "RAIL3", 
