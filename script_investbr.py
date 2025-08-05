@@ -4,8 +4,6 @@ import pytz
 import requests
 from bs4 import BeautifulSoup
 import json
-import os
-import re
 from curl_cffi import requests as curl_requests
 
 def buscar_dados_acao_investidor10(ticker):
@@ -171,29 +169,28 @@ def buscar_dados_acao_fundamentus(ticker):
                 "oscilacao_ano_menos_5": "N/A"
             }
 
-            # Exemplo genérico de onde extrair os dados
-            tabela = soup.find("table", class_="resultado")
-            if tabela:
-                linhas = tabela.find_all("tr")
-                for linha in linhas:
-                    colunas = linha.find_all("td")
-                    if len(colunas) >= 2:
-                        ano_texto = colunas[0].get_text(strip=True)
-                        valor = colunas[1].get_text(strip=True)
-                        if ano_texto.isdigit():
-                            ano = int(ano_texto)
-                            if ano == ano_atual:
-                                dados["oscilacao_ano_atual"] = valor
-                            elif ano == ano_atual - 1:
-                                dados["oscilacao_ano_menos_1"] = valor
-                            elif ano == ano_atual - 2:
-                                dados["oscilacao_ano_menos_2"] = valor
-                            elif ano == ano_atual - 3:
-                                dados["oscilacao_ano_menos_3"] = valor
-                            elif ano == ano_atual - 4:
-                                dados["oscilacao_ano_menos_4"] = valor
-                            elif ano == ano_atual - 5:
-                                dados["oscilacao_ano_menos_5"] = valor
+            # Localiza todas as linhas da tabela que contenham oscilações
+            linhas = soup.find_all("tr")
+            for linha in linhas:
+                colunas = linha.find_all("td")
+                if len(colunas) >= 2:
+                    texto_ano = colunas[0].get_text(strip=True)
+                    texto_valor = colunas[1].get_text(strip=True)
+
+                    if texto_ano.isdigit():
+                        ano = int(texto_ano)
+                        if ano == ano_atual:
+                            dados["oscilacao_ano_atual"] = texto_valor
+                        elif ano == ano_atual - 1:
+                            dados["oscilacao_ano_menos_1"] = texto_valor
+                        elif ano == ano_atual - 2:
+                            dados["oscilacao_ano_menos_2"] = texto_valor
+                        elif ano == ano_atual - 3:
+                            dados["oscilacao_ano_menos_3"] = texto_valor
+                        elif ano == ano_atual - 4:
+                            dados["oscilacao_ano_menos_4"] = texto_valor
+                        elif ano == ano_atual - 5:
+                            dados["oscilacao_ano_menos_5"] = texto_valor
 
             return dados
 
