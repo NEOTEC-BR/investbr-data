@@ -1,22 +1,27 @@
 from datetime import datetime
 import time
 import pytz
-import requests
 from bs4 import BeautifulSoup
 import json
 from curl_cffi import requests as curl_requests
 
+
 def buscar_dados_acao_investidor10(ticker):
     """
-    Método melhorado para extrair dados do Investidor10
+    Scraper para Investidor10 com curl_cffi, simulando navegador para evitar bloqueios
     """
     url = f"https://investidor10.com.br/acoes/{ticker.lower()}/"
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
     }
-    
+
     try:
-        response = requests.get(url, headers=headers)
+        response = curl_requests.get(
+            url,
+            headers=headers,
+            impersonate="chrome110",
+            timeout=20
+        )
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -49,15 +54,13 @@ def buscar_dados_acao_investidor10(ticker):
             if value_span:
                 dados["cotacao"] = value_span.get_text(strip=True)
 
-        # Extrai variação 12 meses - está em um card específico
-        # Busca pelo card que contém "VARIAÇÃO (12M)" no header
+        # Extrai variação 12 meses
         variacao_cards = soup.find_all("div", class_="_card")
         for card in variacao_cards:
             header = card.find("div", class_="_card-header")
             if header:
                 header_text = header.get_text(strip=True).upper()
                 if "VARIAÇÃO" in header_text and "12M" in header_text:
-                    # Encontrou o card da variação 12M, agora busca o valor no body
                     card_body = card.find("div", class_="_card-body")
                     if card_body:
                         span = card_body.find("span")
@@ -71,17 +74,13 @@ def buscar_dados_acao_investidor10(ticker):
             cells = indicators_section.find_all("div", class_="cell")
             
             for cell in cells:
-                # Procura pelo texto do indicador
                 cell_text = cell.get_text().upper()
-                
-                # Extrai o valor (primeiro span dentro da div com classe "value")
                 value_div = cell.find("div", class_="value")
                 if value_div:
                     value_span = value_div.find("span")
                     if value_span:
                         valor = value_span.get_text(strip=True)
-                        
-                        # Mapeia os indicadores baseado no texto da célula
+
                         if "P/L" in cell_text and "P/LP" not in cell_text:
                             dados["pl"] = valor
                         elif "P/VP" in cell_text:
@@ -104,10 +103,8 @@ def buscar_dados_acao_investidor10(ticker):
                             dados["vpa"] = valor
                         elif "ROE" in cell_text:
                             dados["roe"] = valor
-                        # Melhorada a detecção para dívida líquida / patrimônio
                         elif "DÍVIDA LÍQUIDA / PATRIMÔNIO" in cell_text or "DIVIDA LIQUIDA / PATRIMONIO" in cell_text:
                             dados["divida_liquida_patrimonio"] = valor
-                        # Melhorada a detecção para dívida líquida / EBITDA
                         elif "DÍVIDA LÍQUIDA / EBITDA" in cell_text or "DIVIDA LIQUIDA / EBITDA" in cell_text or "DL/EBITDA" in cell_text:
                             dados["divida_liquida_ebitda"] = valor
                         elif "LIQUIDEZ CORRENTE" in cell_text:
@@ -269,11 +266,11 @@ for acao in acoes:
     
     dados_acoes.append(dados_combinados)
 
-"""
+
 # Salva na área de trabalho
-desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
-json_path = os.path.join(desktop_path, 'investbr.json')
-"""
+# desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
+# json_path = os.path.join(desktop_path, 'investbr.json')
+
 
 json_path = 'dados_acoes.json'
 
